@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surface Tension Calculator</title>
+    <link rel="stylesheet" href="styles/surface-tension.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Surface Tension Calculator</h1>
+        <form id="surfaceTensionForm">
+            <label for="force">Force (F, in N):</label>
+            <input type="number" id="force" required>
+            
+            <label for="lengthST">Length (L, in m):</label>
+            <input type="number" id="lengthST" required>
+            
+            <button type="submit">Calculate</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="scripts/surface-tension.js"></script>
+</body>
+</html>
