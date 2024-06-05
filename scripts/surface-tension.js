@@ -15,7 +15,6 @@ document.getElementById('surfaceTensionForm').addEventListener('submit', functio
     reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
-            // Calculate the radius of the water drop
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = img.width;
@@ -23,7 +22,6 @@ document.getElementById('surfaceTensionForm').addEventListener('submit', functio
             ctx.drawImage(img, 0, 0);
             
             // Perform image processing to find the water drop radius
-            // This is a placeholder implementation and needs actual image processing
             const radiusInPixels = findWaterDropRadius(ctx, canvas.width, canvas.height);
             
             if (radiusInPixels === null) {
@@ -36,10 +34,7 @@ document.getElementById('surfaceTensionForm').addEventListener('submit', functio
             const radiusInMeters = radiusInPixels * pixelToMeter;
 
             // Calculate the surface tension (γ)
-            // γ = (ρ * g * r^2) / (2 * h)
-            // where r is the radius of the drop and h is the height of the drop
-            // Assuming h = r for simplicity
-            const surfaceTension = (waterDensity * gravity * Math.pow(radiusInMeters, 2)) / (2 * radiusInMeters);
+            const surfaceTension = (waterDensity * gravity * radiusInMeters) / 2;
 
             document.getElementById('result').textContent = `Surface Tension (γ): ${surfaceTension.toFixed(6)} N/m`;
         };
@@ -50,7 +45,6 @@ document.getElementById('surfaceTensionForm').addEventListener('submit', functio
 
 function findWaterDropRadius(ctx, width, height) {
     // Placeholder function to detect the radius of the water drop in the image
-    // Needs actual implementation using image processing techniques
-    // Returning a fixed value for now
+    // This would require actual image processing
     return 50; // Example radius in pixels
 }
