@@ -15,7 +15,7 @@ document.getElementById('surfaceTensionForm').addEventListener('submit', functio
     reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
-            const canvas = document.createElement('canvas');
+            const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = img.width;
             canvas.height = img.height;
@@ -24,33 +24,54 @@ document.getElementById('surfaceTensionForm').addEventListener('submit', functio
             // Load the image into OpenCV
             let src = cv.imread(canvas);
             let gray = new cv.Mat();
-            let circles = new cv.Mat();
             cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY, 0);
             cv.GaussianBlur(gray, gray, new cv.Size(9, 9), 2, 2);
+            let circles = new cv.Mat();
             cv.HoughCircles(gray, circles, cv.HOUGH_GRADIENT, 1, gray.rows / 8, 100, 30, 1, 30);
 
-            // Assuming the first detected circle is the water drop
-            if (circles.rows > 0) {
-                let x = circles.data32F[0];
-                let y = circles.data32F[1];
-                let radiusInPixels = circles.data32F[2];
-
-                // Convert radius from pixels to meters
-                const pixelToMeter = (tubeDiameter / 1000) / radiusInPixels;
-                const radiusInMeters = radiusInPixels * pixelToMeter;
-
-                // Calculate the surface tension (γ)
-                const surfaceTension = (waterDensity * gravity * radiusInMeters) / 2;
-
-                document.getElementById('result').textContent = `Surface Tension (γ): ${surfaceTension.toFixed(6)} N/m`;
-            } else {
-                alert('Unable to detect water drop in the image');
+            // Draw detected circles
+            for (let i = 0; i < circles.cols; ++i) {
+                let x = circles.data32F[i * 3];
+                let y = circles.data32F[i * 3 + 1];
+                let radius = circles.data32F[i * 3 + 2];
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, 2 * Math.PI);
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 2;
+                ctx.stroke();
             }
 
-            // Clean up
-            src.delete();
-            gray.delete();
-            circles.delete();
+            // Allow user to click to select the circle
+            canvas.style.display = 'block';
+            canvas.addEventListener('click', function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                for (let i = 0; i < circles.cols; ++i) {
+                    let x = circles.data32F[i * 3];
+                    let y = circles.data32F[i * 3 + 1];
+                    let radius = circles.data32F[i * 3 + 2];
+
+                    // Check if click is inside the circle
+                    if (Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2) <= Math.pow(radius, 2)) {
+                        // Convert radius from pixels to meters
+                        const pixelToMeter = (tubeDiameter / 1000) / radius;
+                        const radiusInMeters = radius * pixelToMeter;
+
+                        // Calculate the surface tension (γ)
+                        const surfaceTension = (waterDensity * gravity * radiusInMeters) / 2;
+
+                        document.getElementById('result').textContent = `Surface Tension (γ): ${surfaceTension.toFixed(6)} N/m`;
+                        break;
+                    }
+                }
+
+                // Clean up
+                src.delete();
+                gray.delete();
+                circles.delete();
+            }, { once: true });
         };
         img.src = event.target.result;
     };
