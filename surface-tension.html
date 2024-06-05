@@ -10,11 +10,17 @@
     <div class="container">
         <h1>Surface Tension Calculator</h1>
         <form id="surfaceTensionForm">
-            <label for="force">Force (F, in N):</label>
-            <input type="number" id="force" required>
+            <label for="tubeDiameter">Tube Diameter (D, in mm):</label>
+            <input type="number" id="tubeDiameter" step="0.01" required>
             
-            <label for="lengthST">Length (L, in m):</label>
-            <input type="number" id="lengthST" required>
+            <label for="waterDensity">Water Density (ρ, in kg/m³):</label>
+            <input type="number" id="waterDensity" step="0.01" value="1000" required>
+            
+            <label for="gravity">Gravity (g, in m/s²):</label>
+            <input type="number" id="gravity" step="0.01" value="9.81" required>
+            
+            <label for="waterDropImage">Upload Water Drop Image:</label>
+            <input type="file" id="waterDropImage" accept="image/*" required>
             
             <button type="submit">Calculate</button>
         </form>
