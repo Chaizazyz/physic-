@@ -20,31 +20,39 @@ document.getElementById('surfaceTensionForm').addEventListener('submit', functio
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            
-            // Perform image processing to find the water drop radius
-            const radiusInPixels = findWaterDropRadius(ctx, canvas.width, canvas.height);
-            
-            if (radiusInPixels === null) {
+
+            // Load the image into OpenCV
+            let src = cv.imread(canvas);
+            let gray = new cv.Mat();
+            let circles = new cv.Mat();
+            cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY, 0);
+            cv.GaussianBlur(gray, gray, new cv.Size(9, 9), 2, 2);
+            cv.HoughCircles(gray, circles, cv.HOUGH_GRADIENT, 1, gray.rows / 8, 100, 30, 1, 30);
+
+            // Assuming the first detected circle is the water drop
+            if (circles.rows > 0) {
+                let x = circles.data32F[0];
+                let y = circles.data32F[1];
+                let radiusInPixels = circles.data32F[2];
+
+                // Convert radius from pixels to meters
+                const pixelToMeter = (tubeDiameter / 1000) / radiusInPixels;
+                const radiusInMeters = radiusInPixels * pixelToMeter;
+
+                // Calculate the surface tension (γ)
+                const surfaceTension = (waterDensity * gravity * radiusInMeters) / 2;
+
+                document.getElementById('result').textContent = `Surface Tension (γ): ${surfaceTension.toFixed(6)} N/m`;
+            } else {
                 alert('Unable to detect water drop in the image');
-                return;
             }
 
-            // Convert radius from pixels to meters
-            const pixelToMeter = (tubeDiameter / 1000) / radiusInPixels;
-            const radiusInMeters = radiusInPixels * pixelToMeter;
-
-            // Calculate the surface tension (γ)
-            const surfaceTension = (waterDensity * gravity * radiusInMeters) / 2;
-
-            document.getElementById('result').textContent = `Surface Tension (γ): ${surfaceTension.toFixed(6)} N/m`;
+            // Clean up
+            src.delete();
+            gray.delete();
+            circles.delete();
         };
         img.src = event.target.result;
     };
     reader.readAsDataURL(waterDropImage);
 });
-
-function findWaterDropRadius(ctx, width, height) {
-    // Placeholder function to detect the radius of the water drop in the image
-    // This would require actual image processing
-    return 50; // Example radius in pixels
-}
