@@ -3,30 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surface Tension Calculation</title>
+    <title>Surface Tension Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Surface Tension Calculation</h1>
-    <form id="calculationForm">
-        <label for="delta_rho">Δρ (kg/m³):</label>
-        <input type="number" id="delta_rho" name="delta_rho" step="any" required>
+    <div class="container">
+        <h1>Surface Tension Calculator</h1>
+        <form id="calculationForm">
+            <div class="form-group">
+                <label for="delta_rho">Δρ (kg/m³):</label>
+                <input type="number" id="delta_rho" name="delta_rho" step="any" required>
+            </div>
 
-        <label for="g">g (m/s²):</label>
-        <input type="number" id="g" name="g" value="9.78" step="any" required>
+            <div class="form-group">
+                <label for="g">g (m/s²):</label>
+                <input type="number" id="g" name="g" value="9.78" step="any" required>
+            </div>
 
-        <label for="d_e2">D²<sub>E</sub> (m²):</label>
-        <input type="number" id="d_e2" name="d_e2" step="any" required>
+            <div class="form-group">
+                <label for="d_e2">D²<sub>E</sub> (m²):</label>
+                <input type="number" id="d_e2" name="d_e2" step="any" required>
+            </div>
 
-        <label for="d_s">D<sub>S</sub> (m):</label>
-        <input type="number" id="d_s" name="d_s" step="any" required>
+            <div class="form-group">
+                <label for="d_s">D<sub>S</sub> (m):</label>
+                <input type="number" id="d_s" name="d_s" step="any" required>
+            </div>
 
-        <label for="d_e">D<sub>E</sub> (m):</label>
-        <input type="number" id="d_e" name="d_e" step="any" required>
+            <div class="form-group">
+                <label for="d_e">D<sub>E</sub> (m):</label>
+                <input type="number" id="d_e" name="d_e" step="any" required>
+            </div>
 
-        <button type="button" onclick="calculateSurfaceTension()">Calculate</button>
-    </form>
-    <p id="result"></p>
+            <button type="button" onclick="calculateSurfaceTension()">Calculate</button>
+        </form>
+        <p id="result"></p>
+    </div>
 
     <script src="script.js"></script>
 </body>
