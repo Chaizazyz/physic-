@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surface Tension Calculator</title>
-    <link rel="stylesheet" href="styles/surface-tension.css">
-    <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript"></script>
+    <title>Surface Tension Calculation</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Surface Tension Calculator</h1>
-        <form id="surfaceTensionForm">
-            <label for="tubeDiameter">Tube Diameter (D, in mm):</label>
-            <input type="number" id="tubeDiameter" step="0.0000000001" required>
-            
-            <label for="waterDensity">Water Density (ρ, in kg/m³):</label>
-            <input type="number" id="waterDensity" step="0.01" value="1000" required>
-            
-            <label for="gravity">Gravity (g, in m/s²):</label>
-            <input type="number" id="gravity" step="0.01" value="9.81" required>
-            
-            <label for="waterDropImage">Upload Water Drop Image:</label>
-            <input type="file" id="waterDropImage" accept="image/*" required>
-            
-            <button type="submit">Calculate</button>
-        </form>
-        <div id="result"></div>
-        <canvas id="canvas" style="display:none;"></canvas>
-    </div>
-    <script src="scripts/surface-tension.js"></script>
+    <h1>Surface Tension Calculation</h1>
+    <form id="calculationForm">
+        <label for="delta_rho">Δρ (kg/m³):</label>
+        <input type="number" id="delta_rho" name="delta_rho" step="any" required>
+
+        <label for="g">g (m/s²):</label>
+        <input type="number" id="g" name="g" value="9.78" step="any" required>
+
+        <label for="d_e2">D²<sub>E</sub> (m²):</label>
+        <input type="number" id="d_e2" name="d_e2" step="any" required>
+
+        <label for="d_s">D<sub>S</sub> (m):</label>
+        <input type="number" id="d_s" name="d_s" step="any" required>
+
+        <label for="d_e">D<sub>E</sub> (m):</label>
+        <input type="number" id="d_e" name="d_e" step="any" required>
+
+        <button type="button" onclick="calculateSurfaceTension()">Calculate</button>
+    </form>
+    <p id="result"></p>
+
+    <script src="script.js"></script>
 </body>
 </html>
